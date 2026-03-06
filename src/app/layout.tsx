@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { QuizProvider } from "@/context/QuizContext";
+import { Navbar } from "@/components/layout/Navbar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next.js Template",
-  description: "A minimal Next.js starter template",
+  title: "QuizMaster - Test Your Knowledge",
+  description: "A fun quiz app to test your knowledge on various topics",
 };
 
 export default function RootLayout({
@@ -24,10 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${inter.className} antialiased bg-gray-50 dark:bg-gray-900`}>
+        <QuizProvider>
+          <Navbar />
+          <main>{children}</main>
+        </QuizProvider>
       </body>
     </html>
   );
