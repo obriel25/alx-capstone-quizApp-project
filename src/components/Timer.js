@@ -2,13 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 
-interface TimerProps {
-  initialTime: number;
-  onTimeUp: () => void;
-  isActive: boolean;
-}
-
-export function Timer({ initialTime, onTimeUp, isActive }: TimerProps) {
+export function Timer({ initialTime, onTimeUp, isActive }) {
   const [timeLeft, setTimeLeft] = useState(initialTime);
   
   const handleTimeUp = useCallback(() => {
@@ -39,7 +33,7 @@ export function Timer({ initialTime, onTimeUp, isActive }: TimerProps) {
   
   // Note: Timer resets via key prop in parent component
   
-  const formatTime = (seconds: number): string => {
+  const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;

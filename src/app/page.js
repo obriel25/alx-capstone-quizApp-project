@@ -2,15 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { fetchCategories, Category } from '@/services/triviaApi';
+import { fetchCategories } from '@/services/triviaApi';
 import { useQuiz } from '@/context/QuizContext';
 import { Button, Loader, ErrorMessage } from '@/components/ui';
 
 export default function HomePage() {
   const { quizHistory } = useQuiz();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function HomePage() {
   
   const recentQuizzes = quizHistory.slice(0, 3);
   
-  const getDifficultyColor = (difficulty: string) => {
+  const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
       case 'easy':
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';

@@ -1,15 +1,5 @@
 "use client";
 
-interface AnswerOptionProps {
-  answer: string;
-  index: number;
-  isSelected: boolean;
-  isCorrect?: boolean;
-  isRevealed: boolean;
-  onSelect: (answer: string) => void;
-  disabled: boolean;
-}
-
 const optionLabels = ['A', 'B', 'C', 'D'];
 
 export function AnswerOption({
@@ -20,7 +10,7 @@ export function AnswerOption({
   isRevealed,
   onSelect,
   disabled
-}: AnswerOptionProps) {
+}) {
   const getOptionStyles = () => {
     if (!isRevealed) {
       return isSelected

@@ -1,12 +1,3 @@
-import React, { ButtonHTMLAttributes } from 'react';
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
-  isLoading?: boolean;
-  children: React.ReactNode;
-}
-
 export function Button({
   variant = 'primary',
   size = 'md',
@@ -15,7 +6,7 @@ export function Button({
   className = '',
   disabled,
   ...props
-}: ButtonProps) {
+}) {
   const baseStyles = 'font-semibold rounded-lg transition-all duration-200 inline-flex items-center justify-center';
   
   const variants = {

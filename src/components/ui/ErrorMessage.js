@@ -1,9 +1,4 @@
-interface ErrorMessageProps {
-  message: string;
-  onRetry?: () => void;
-}
-
-export function ErrorMessage({ message, onRetry }: ErrorMessageProps) {
+export function ErrorMessage({ message, onRetry }) {
   return (
     <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 my-4">
       <div className="flex items-start gap-3">

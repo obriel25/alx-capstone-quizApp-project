@@ -31,7 +31,7 @@ export default function QuizPage() {
     resetQuiz
   } = useQuiz();
   
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isRevealed, setIsRevealed] = useState(false);
   const [timerKey, setTimerKey] = useState(0);
   
@@ -41,7 +41,7 @@ export default function QuizPage() {
   
   const currentQuestion = questions[currentQuestionIndex];
   
-  const handleSelectAnswer = (answer: string) => {
+  const handleSelectAnswer = (answer) => {
     if (isRevealed) return;
     setSelectedAnswer(answer);
   };

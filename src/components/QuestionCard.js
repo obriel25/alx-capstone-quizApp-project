@@ -1,16 +1,6 @@
 "use client";
 
-import { Question } from '@/services/triviaApi';
 import { AnswerOption } from './AnswerOption';
-
-interface QuestionCardProps {
-  question: Question;
-  currentIndex: number;
-  totalQuestions: number;
-  selectedAnswer: string | null;
-  isRevealed: boolean;
-  onSelectAnswer: (answer: string) => void;
-}
 
 export function QuestionCard({
   question,
@@ -19,14 +9,14 @@ export function QuestionCard({
   selectedAnswer,
   isRevealed,
   onSelectAnswer
-}: QuestionCardProps) {
-  const decodeHtml = (html: string): string => {
+}) {
+  const decodeHtml = (html) => {
     const txt = document.createElement('textarea');
     txt.innerHTML = html;
     return txt.value;
   };
   
-  const getDifficultyColor = (difficulty: string) => {
+  const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
       case 'easy':
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';

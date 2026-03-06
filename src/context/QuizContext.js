@@ -1,72 +1,40 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Question, Category, QuizSetup } from '@/services/triviaApi';
-import { QuestionResult, QuizScore } from '@/utils/calculateScore';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { QuestionResult, QuizScore, calculateScore } from '@/utils/calculateScore';
 import { getCurrentDateISO } from '@/utils/formatDate';
 
-export interface QuizHistoryItem {
-  id: string;
-  date: string;
-  category: string;
-  difficulty: string;
-  score: QuizScore;
-  results: QuestionResult[];
-}
+export const QuizHistoryItem = {
+  id: '',
+  date: '',
+  category: '',
+  difficulty: '',
+  score: null,
+  results: []
+};
 
-interface QuizContextType {
-  // Quiz state
-  questions: Question[];
-  currentQuestionIndex: number;
-  answers: QuestionResult[];
-  isQuizActive: boolean;
-  isQuizComplete: boolean;
-  
-  // Quiz setup
-  categories: Category[];
-  selectedCategory: number;
-  selectedDifficulty: string;
-  selectedAmount: number;
-  isLoading: boolean;
-  error: string | null;
-  
-  // Quiz history
-  quizHistory: QuizHistoryItem[];
-  
-  // Actions
-  setSelectedCategory: (category: number) => void;
-  setSelectedDifficulty: (difficulty: string) => void;
-  setSelectedAmount: (amount: number) => void;
-  fetchCategories: () => Promise<void>;
-  startQuiz: () => Promise<void>;
-  answerQuestion: (answer: string) => void;
-  nextQuestion: () => void;
-  resetQuiz: () => void;
-  clearHistory: () => void;
-}
-
-const QuizContext = createContext<QuizContextType | undefined>(undefined);
+const QuizContext = createContext(undefined);
 
 const HISTORY_KEY = 'quiz_history';
 
-export function QuizProvider({ children }: { children: ReactNode }) {
+export function QuizProvider({ children }) {
   // Quiz state
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<QuestionResult[]>([]);
+  const [answers, setAnswers] = useState([]);
   const [isQuizActive, setIsQuizActive] = useState(false);
   const [isQuizComplete, setIsQuizComplete] = useState(false);
   
   // Quiz setup
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedDifficulty, setSelectedDifficulty] = useState('medium');
   const [selectedAmount, setSelectedAmount] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
   
   // Quiz history
-  const [quizHistory, setQuizHistory] = useState<QuizHistoryItem[]>([]);
+  const [quizHistory, setQuizHistory] = useState([]);
   
   // Load history from localStorage on mount
   useEffect(() => {
@@ -108,13 +76,13 @@ export function QuizProvider({ children }: { children: ReactNode }) {
       const fetchedQuestions = await fetchQuizQuestions({
         amount: selectedAmount,
         category: selectedCategory,
-        difficulty: selectedDifficulty as 'easy' | 'medium' | 'hard',
+        difficulty: selectedDifficulty,
         type: 'multiple'
       });
       
       setQuestions(fetchedQuestions);
       setIsQuizActive(true);
-    } catch (e: unknown) {
+    } catch (e) {
       const message = e instanceof Error ? e.message : 'Failed to start quiz';
       setError(message);
     } finally {
@@ -122,11 +90,11 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     }
   };
   
-  const answerQuestion = (answer: string) => {
+  const answerQuestion = (answer) => {
     const currentQuestion = questions[currentQuestionIndex];
     const isCorrect = answer === currentQuestion.correct_answer;
     
-    const result: QuestionResult = {
+    const result = {
       question: currentQuestion.question,
       userAnswer: answer,
       correctAnswer: currentQuestion.correct_answer,
@@ -145,7 +113,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
       const score = calculateScore(answers);
       
       const category = categories.find(c => c.id === selectedCategory);
-      const historyItem: QuizHistoryItem = {
+      const historyItem = {
         id: Date.now().toString(),
         date: getCurrentDateISO(),
         category: category?.name || 'Mixed',
@@ -174,7 +142,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(HISTORY_KEY);
   };
   
-  const value: QuizContextType = {
+  const value = {
     questions,
     currentQuestionIndex,
     answers,

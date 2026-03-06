@@ -1,9 +1,4 @@
-interface LoaderProps {
-  size?: 'sm' | 'md' | 'lg';
-  message?: string;
-}
-
-export function Loader({ size = 'md', message }: LoaderProps) {
+export function Loader({ size = 'md', message }) {
   const sizes = {
     sm: 'h-6 w-6',
     md: 'h-10 w-10',

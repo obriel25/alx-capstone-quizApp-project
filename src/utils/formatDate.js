@@ -1,10 +1,10 @@
 /**
  * Format date to readable string
  */
-export function formatDate(date: Date | string): string {
+export function formatDate(date) {
   const d = typeof date === 'string' ? new Date(date) : date;
   
-  const options: Intl.DateTimeFormatOptions = {
+  const options = {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -18,6 +18,6 @@ export function formatDate(date: Date | string): string {
 /**
  * Format date for storage (ISO string)
  */
-export function getCurrentDateISO(): string {
+export function getCurrentDateISO() {
   return new Date().toISOString();
 }
