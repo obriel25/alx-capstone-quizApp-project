@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuiz } from '@/context/QuizContext';
+import { useAuth } from '@/context/AuthContext';
 import { QuestionCard } from '@/components/QuestionCard';
 import { Timer } from '@/components/Timer';
 import { Button, Loader, ErrorMessage } from '@/components/ui';
 
 export default function QuizPage() {
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const {
     questions,
     currentQuestionIndex,
@@ -36,8 +38,23 @@ export default function QuizPage() {
   const [timerKey, setTimerKey] = useState(0);
   
   useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, authLoading, router]);
+  
+  useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
+  
+  // Show loading while checking auth
+  if (authLoading || !user) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <Loader size="lg" message="Loading..." />
+      </div>
+    );
+  }
   
   const currentQuestion = questions[currentQuestionIndex];
   

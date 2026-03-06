@@ -1,5 +1,6 @@
 import "./globals.css";
 import { QuizProvider } from "@/context/QuizContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { Navbar } from "@/components/layout/Navbar";
 
 export const metadata = {
@@ -11,10 +12,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="antialiased bg-gray-50 dark:bg-gray-900">
-        <QuizProvider>
-          <Navbar />
-          <main>{children}</main>
-        </QuizProvider>
+        <AuthProvider>
+          <QuizProvider>
+            <Navbar />
+            <main>{children}</main>
+          </QuizProvider>
+        </AuthProvider>
       </body>
     </html>
   );

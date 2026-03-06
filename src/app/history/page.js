@@ -1,11 +1,31 @@
 "use client";
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useQuiz } from '@/context/QuizContext';
+import { useAuth } from '@/context/AuthContext';
 import { formatDate, calculateAverageScore, getBestScore } from '@/utils';
-import { Button } from '@/components/ui';
+import { Button, Loader } from '@/components/ui';
 
 export default function HistoryPage() {
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const { quizHistory, clearHistory } = useQuiz();
+  
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, authLoading, router]);
+  
+  // Show loading while checking auth
+  if (authLoading || !user) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <Loader size="lg" message="Loading..." />
+      </div>
+    );
+  }
   
   const scores = quizHistory.map(h => h.score.percentage);
   const averageScore = calculateAverageScore(scores);
